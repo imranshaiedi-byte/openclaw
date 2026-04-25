@@ -69,6 +69,7 @@ Docs: https://docs.openclaw.ai
 
 ### Fixes
 
+- Subagents: stop stale unended runs from counting as active or pending forever, while preserving restart-aborted recovery for recoverable child sessions. Fixes #71252. Thanks @hclsys.
 - Reply media: allow sandboxed replies to deliver OpenClaw-managed `media/outbound` and `media/tool-*` attachments without treating them as sandbox escapes, while keeping alias-escape checks on the managed media root. Fixes #71138. Thanks @mayor686, @truffle-dev, and @neeravmakwana.
 - CLI/agent: keep `openclaw agent --json` stdout reserved for the JSON response by routing gateway, plugin, and embedded-fallback diagnostics to stderr before execution starts. Fixes #71319.
 - Agents/Gemini: retry reasoning-only, empty, and planning-only Gemini turns instead of letting sessions silently stall. Fixes #71074. (#71362) Thanks @neeravmakwana.
@@ -76,6 +77,7 @@ Docs: https://docs.openclaw.ai
 - Exec approvals: allow bare command-name allowlist patterns to match PATH-resolved executable basenames without trusting `./tool` or absolute path-selected binaries. Fixes #71315. Thanks @chen-zhang-cs-code and @dengluozhang.
 - Config/recovery: skip whole-file last-known-good rollback when invalidity is scoped to `plugins.entries.*`, preserving unrelated user settings during plugin schema or host-version skew. Fixes #71289. Thanks @jalehman.
 - Agents/tools: keep resolved reply-run configs from being overwritten by stale runtime snapshots, and let empty web runtime metadata fall back to configured provider auto-detection so standard and queued turns expose the same tool set. Fixes #71355. Thanks @c-g14.
+- Agents/TTS: pass the resolved shared config into the `tts` tool, so tool-triggered speech uses configured providers and voices instead of falling back to a fresh config load.
 - Agents/TTS: preserve voice media when a tool-generated reply is paired with an exact `NO_REPLY` sentinel, stripping the sentinel text instead of dropping the audio payload. Fixes #66092.
 - Compaction: honor explicit `agents.defaults.compaction.keepRecentTokens` for manual `/compact`, re-distill safeguard summaries instead of snowballing previous summaries, and enable safeguard summary quality checks by default. Fixes #71357. Thanks @WhiteGiverMa.
 - Sessions: honor configured `session.maintenance` settings during load-time maintenance instead of falling back to default entry caps. Fixes #71356. Thanks @comolago.
